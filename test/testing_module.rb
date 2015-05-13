@@ -70,4 +70,20 @@ module TestingModule
     # puts "\n#{delta} >? #{min_time * runs}"
     assert((delta / (min_time * runs)) > TIMING_TOLERANCE)
   end
+
+  def test_thread_safety
+    mock_class = Class.new do
+      extend GluttonRatelimit
+      def doit; end
+      rate_limit :doit, 15, 10
+    end
+
+    assert_nothing_raised do
+      100.times.map do |i|
+        Thread.new do
+          10.times {|x| mock_class.new.doit }
+        end
+      end.each(&:join)
+    end
+  end
 end
