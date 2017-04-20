@@ -11,7 +11,7 @@ module GluttonRatelimit
       @timestamps.push(new_stamp).shift
     end
       
-    def wait
+    def unsafe_wait
       delta = Time.now - oldest_timestamp
       sleep(@time_period - delta) if delta < @time_period
       self.current_timestamp = Time.now

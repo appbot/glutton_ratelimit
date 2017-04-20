@@ -7,7 +7,7 @@ module GluttonRatelimit
       @tokens = @executions
     end
     
-    def wait
+    def unsafe_wait
       reset_bucket if @tokens.nil?
       
       if @tokens.zero?

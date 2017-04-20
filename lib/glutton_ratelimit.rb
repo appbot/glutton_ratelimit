@@ -19,6 +19,7 @@ module GluttonRatelimit
     def initialize executions, time_period
       @executions = executions
       @time_period = time_period
+      @mutex = Mutex.new
     end
     
     def times(num, &block)
@@ -28,6 +29,16 @@ module GluttonRatelimit
         wait
         yield
       end
+    end
+
+    def wait
+      @mutex.synchronize { unsafe_wait }
+    end
+
+    private
+
+    def unsafe_wait
+      raise NotImplemented
     end
   end
 end

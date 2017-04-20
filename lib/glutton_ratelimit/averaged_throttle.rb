@@ -17,7 +17,7 @@ module GluttonRatelimit
       @total_task_time.to_f / executed_this_period
     end
     
-    def wait
+    def unsafe_wait
       reset_bucket if @tokens.nil?
       
       now = Time.now
